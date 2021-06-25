@@ -1,0 +1,58 @@
+.login {
+  color: black;
+  border: 1px rgb(32, 32, 32) solid;
+  background-color: rgb(20, 26, 34);
+  border-radius: 5px;
+  width: 25%;
+  padding: 20px;
+  margin: auto;
+}
+
+.label {
+  color: white;
+  background-color: transparent;
+  margin-top: 10px;
+}
+
+.input {
+  background-color: white;
+  border: inherit;
+  margin-top: 10px;
+  width: 100%;
+  color: inherit;
+  font-size: 20px;
+  border-radius: inherit;
+  margin-bottom: 15px;
+  padding: 5px 0px 5px 5px;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+}
+
+.link {
+  display: block;
+  background-color: transparent;
+  margin-top: 15px;
+  text-align: center;
+  font-weight: bolder;
+  text-decoration: none;
+}
+
+.link:link,
+.link:visited {
+  color: #3299ff;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.sign-in {
+  color: white;
+  text-align: center;
+  font-size: 30px;
+  margin: 25px;
+  background-color: transparent;
+}

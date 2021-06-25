@@ -1,0 +1,15 @@
+.header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  margin: 0;
+  padding: 16px;
+  background-color: #161b22;
+  color: white;
+  height: 60px;
+}
+
+.user-logo {
+  margin-left: auto;
+}

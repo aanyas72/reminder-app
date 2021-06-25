@@ -1,0 +1,92 @@
+.dashboard {
+  color: white;
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+}
+
+.dashboard-name {
+  font-size: 50px;
+  font-weight: bolder;
+}
+
+.add-new {
+  font-weight: bolder;
+  width: 5%;
+  height: 5%;
+}
+
+.reminders,
+.classes-and-kids,
+.new {
+  border: 1px rgb(32, 32, 32) solid;
+  background-color: rgb(20, 26, 34);
+  border-radius: 5px;
+  padding: 16px;
+  margin-top: 20px;
+  width: 45%;
+  overflow-y: auto;
+  height: 50%;
+}
+
+.reminders,
+.classes-and-kids {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.new {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.classes-and-kids {
+  margin-right: 10px;
+}
+
+.label-name {
+  font-size: 25px;
+  font-weight: bold;
+  background-color: inherit;
+  display: inline-block;
+}
+
+.expand-btn:hover {
+  cursor: pointer;
+}
+
+.item {
+  margin-top: 10px;
+  background-color: inherit;
+}
+
+.divider {
+  border-top: 3px solid white;
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.expand-btn {
+  display: inline-block;
+  background-color: transparent;
+  margin-left: 10px;
+}
+
+.add-new-input {
+  margin-left: 10px;
+  padding: 5px;
+  background-color: white;
+  border: none;
+  color: black;
+}
+
+.input-line {
+  display: block;
+  background-color: inherit;
+  margin-top: 10px;
+}
+
+.textarea {
+  vertical-align: top;
+}
