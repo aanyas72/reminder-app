@@ -1,6 +1,7 @@
 package com.aanya.reminderapp.controllers;
 
 import com.aanya.reminderapp.models.Reminder;
+import com.aanya.reminderapp.models.User;
 import com.aanya.reminderapp.repositories.ReminderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,11 @@ public class ReminderController {
     @GetMapping(path = "/get/{id}")
     public Reminder getReminderById(@PathVariable Integer id) {
         return reminderRepository.findById(id).get();
+    }
+
+    @GetMapping(path = "/{user}")
+    public List<Reminder> getAllRemindersByUserId(@PathVariable User user) {
+        return reminderRepository.getRemindersByUser(user);
     }
 
     @PostMapping(path = "/add")
