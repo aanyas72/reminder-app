@@ -25,13 +25,13 @@ public class ReminderController {
         return reminderRepository.findById(id).get();
     }
 
-    @GetMapping(path = "/{user}")
-    public List<Reminder> getAllRemindersByUserId(@PathVariable User user) {
-        return reminderRepository.getRemindersByUser(user);
-    }
+//    @GetMapping(path = "/user")
+//    public List<Reminder> getAllRemindersByUser(@RequestBody User user) {
+//        return reminderRepository.getRemindersByUser(user);
+//    }
 
     @PostMapping(path = "/add")
-    public @ResponseBody Reminder createReminder(@RequestBody Reminder reminder) {
+    public Reminder createReminder(@RequestBody Reminder reminder) {
         return reminderRepository.saveAndFlush(reminder);
     }
 

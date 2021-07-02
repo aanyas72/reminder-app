@@ -3,6 +3,7 @@ package com.aanya.reminderapp.controllers;
 import com.aanya.reminderapp.models.User;
 import com.aanya.reminderapp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,18 +20,19 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @GetMapping(path = "/get/{id}")
-    public User getUserById(@PathVariable Integer id) {
-        return userRepository.findById(id).get();
-    }
+//    @GetMapping(path = "/get/{username}")
+//    public User getUser(@PathVariable String username) {
+//        return userRepository.findUserByUsername(username);
+//    }
 
     @PostMapping(path = "/add")
-    public @ResponseBody User createUser(@RequestBody User user) {
+    public User createUser(@RequestBody User user) {
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         return userRepository.saveAndFlush(user);
     }
 
-    @RequestMapping(path = "/delete/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable Integer id) {
-        userRepository.deleteById(id);
-    }
+//    @RequestMapping(path = "/delete/{username}", method = RequestMethod.DELETE)
+//    public void delete(@PathVariable String username) {
+//        userRepository.deleteUserByUsername(username);
+//    }
 }

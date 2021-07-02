@@ -34,4 +34,12 @@ public class Reminder {
     public void setReminder(String reminder) {
         this.reminder = reminder;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
