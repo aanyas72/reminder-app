@@ -12,11 +12,6 @@ public class Reminder {
     private String reminder;
 
     @ManyToOne
-//    @JoinTable(
-//            name = "user_reminders",
-//            joinColumns = @JoinColumn(name = "reminder_id"),
-//            inverseJoinColumns = @JoinColumn(name = "user_id")
-//    )
     private User user;
 
     public Integer getReminder_id() {

@@ -1,11 +1,14 @@
+.box {
+  width: 25%;
+  padding: 20px;
+  border-radius: 5px;
+  margin: auto;
+}
+
 .login {
   color: black;
   border: 1px rgb(32, 32, 32) solid;
   background-color: rgb(20, 26, 34);
-  border-radius: 5px;
-  width: 25%;
-  padding: 20px;
-  margin: auto;
 }
 
 .label {
@@ -31,21 +34,32 @@
   width: 100%;
 }
 
-.link {
-  display: block;
+.link,
+.login-link {
   background-color: transparent;
-  margin-top: 15px;
-  text-align: center;
-  font-weight: bolder;
   text-decoration: none;
 }
 
+.login-link {
+  margin: 0px 4px;
+}
+
+.link {
+  display: block;
+  margin-top: 15px;
+  text-align: center;
+  font-weight: bolder;
+}
+
 .link:link,
-.link:visited {
+.link:visited,
+.login-link:link,
+.login-link:visited {
   color: #3299ff;
 }
 
-.link:hover {
+.link:hover,
+.login-link:hover {
   text-decoration: underline;
 }
 
@@ -53,6 +67,22 @@
   color: white;
   text-align: center;
   font-size: 30px;
-  margin: 25px;
+  margin: 20px;
   background-color: transparent;
+}
+
+.error {
+  color: #ff7b72;
+  text-align: center;
+  border: 1px red solid;
+  background-color: #25171c;
+  margin-bottom: 10px;
+}
+
+.success {
+  color: #72ff85;
+  text-align: center;
+  border: 1px green solid;
+  background-color: #172519;
+  margin-bottom: 10px;
 }

@@ -1,5 +1,7 @@
 package com.aanya.reminderapp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -10,7 +12,10 @@ public class User {
 
     private String password;
 
+    private String account_type;
+
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private Set<Reminder> reminders;
 
     public String getUsername() {
@@ -27,6 +32,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAccount_type() {
+        return account_type;
+    }
+
+    public void setAccount_type(String account_type) {
+        this.account_type = account_type;
     }
 
     public Set<Reminder> getReminders() {

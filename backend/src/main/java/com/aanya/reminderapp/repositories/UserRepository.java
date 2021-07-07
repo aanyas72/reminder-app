@@ -3,7 +3,8 @@ package com.aanya.reminderapp.repositories;
 import com.aanya.reminderapp.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface UserRepository extends JpaRepository<User, Integer> {
-//    User findUserByUsername(String username);
-//    User deleteUserByUsername(String username);
+    void deleteUserByUsername(String username);
 }
