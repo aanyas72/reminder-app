@@ -10,6 +10,14 @@
   height: 60px;
 }
 
-.user-logo {
+.user-details {
   margin-left: auto;
+}
+
+.user-details:hover {
+  cursor: pointer;
+}
+
+.user-details, .user-logo, .down-arrow {
+  background-color: transparent;
 }

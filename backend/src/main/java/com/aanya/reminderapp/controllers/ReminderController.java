@@ -1,7 +1,6 @@
 package com.aanya.reminderapp.controllers;
 
 import com.aanya.reminderapp.models.Reminder;
-import com.aanya.reminderapp.models.User;
 import com.aanya.reminderapp.repositories.ReminderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

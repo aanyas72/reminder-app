@@ -19,18 +19,18 @@ const Login = () => {
       .then(() => {
         setShowSuccessMessage(true);
         AuthenticationService.registerSuccessfulLogin(username, password);
-        history.push(`/dashboard`);
+        history.push(`/`);
       })
-      .catch(() => {
-        setLoginFailed(true);
-      });
+      .catch(() => setLoginFailed(true));
   };
 
   return (
     <>
       <div className="sign-in">Sign in</div>
       {loginFailed && (
-        <div className="error box">Incorrect username or password. Try again.</div>
+        <div className="error box">
+          Incorrect username or password. Try again.
+        </div>
       )}
       {showSuccessMessage && (
         <div className="success box">Success! Logging in.</div>
@@ -54,9 +54,7 @@ const Login = () => {
           onChange={(event) => setPassword(event.target.value)}
           autoComplete="current-password"
         ></input>
-        <button className="btn">
-          Sign in
-        </button>
+        <button className="btn">Sign in</button>
       </form>
 
       <Link to="/sign-up" className="link">

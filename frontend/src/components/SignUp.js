@@ -1,6 +1,7 @@
 import "../styles/LoginAndSignUp.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import SignUpService from "../services/SignUpService";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -11,10 +12,9 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const data = new FormData(e.target);
-    const value = Object.fromEntries(data.entries());
-    console.log({ value });
+    SignUpService.createLogin(e.target.username.value, e.target.password.value)
+      .then(() => setShowSuccessMessage(true))
+      .catch(() => setCreateLoginFailed(true));
   };
 
   return (

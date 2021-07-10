@@ -38,6 +38,7 @@ public class SecurityConfigBasicAuth extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/users/add").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();

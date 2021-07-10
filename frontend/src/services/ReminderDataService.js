@@ -1,11 +1,11 @@
 import axios from "axios";
-
-const USER = "a";
-const REMINDER_API_URL = "http://localhost:8080/reminders";
+import AuthenticationService from "./AuthenticationService";
 
 class ReminderDataService {
-  retrieveAllReminders(name) {
-    return axios.get(`${REMINDER_API_URL}/${USER}`); //get user from context api
+  retrieveAllReminders() {
+    const USER = AuthenticationService.getLoggedInUserName();
+    const REMINDER_API_URL = "http://localhost:8080/reminders/";
+    return axios.get(`${REMINDER_API_URL}${USER}`);
   }
 }
 

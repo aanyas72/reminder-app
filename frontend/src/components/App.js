@@ -4,15 +4,15 @@ import "../styles/App.css";
 import Login from "./Login";
 import SignUp from "./SignUp";
 import Dashboard from "./Dashboard";
-import AuthenticatedRoute from "./AuthenticatedRoute";
+import Logout from "./Logout";
 
 const App = () => {
   return (
     <Router>
-      <Route exact path="/" component={Login} />
-      <Route exact path="/login" component={Login} />
-      <Route exact path="/sign-up" component={SignUp} />
-      <AuthenticatedRoute exact path="/dashboard" component={Dashboard} />
+      <Route exact path="/" component={Dashboard} />
+      <Route path="/login" component={Login} />
+      <Route path="/sign-up" component={SignUp} />
+      <Route path="/logout" component={Logout} />
     </Router>
   );
 }

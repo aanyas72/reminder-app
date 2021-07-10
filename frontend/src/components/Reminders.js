@@ -7,9 +7,12 @@ const Reminders = () => {
   const [reminders, setReminders] = useState();
 
   useEffect(() => {
-    ReminderDataService.retrieveAllReminders().then((r) =>
-      setReminders(r.data)
-    );
+    ReminderDataService.retrieveAllReminders()
+      .then((r) => setReminders(r.data))
+      .catch((e) => {
+        console.log(e);
+        console.log("data not retrieved");
+      });
   }, []);
 
   return (
