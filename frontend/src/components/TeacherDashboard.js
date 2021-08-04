@@ -3,23 +3,18 @@ import { useHistory } from "react-router-dom";
 
 import "../styles/Dashboard.css";
 import Classes from "./Classes";
-import Students from "./Students";
+import Recipients from "./Recipients";
 import Reminders from "./Reminders";
-import AddNew from "./AddNew";
+import AddNewTeacher from "./AddNewTeacher";
 import Header from "./Header";
 import AuthenticationService from "../services/AuthenticationService";
 
-const Dashboard = () => {
+const TeacherDashboard = () => {
   const [showClasses, setShowClasses] = useState(true);
   const [showStudents, setShowStudents] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
 
   const history = useHistory();
-
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
-    console.log("form was submitted");
-  };
 
   return (
     <>
@@ -35,7 +30,7 @@ const Dashboard = () => {
               </button>
             </div>
 
-            {showAdd && <AddNew handleSubmit={handleSubmit} />}
+            {showAdd && <AddNewTeacher />}
 
             <div className="classes-and-kids">
               <Classes
@@ -43,7 +38,7 @@ const Dashboard = () => {
                 toggleClasses={() => setShowClasses(!showClasses)}
               />
               <div className="divider"></div>
-              <Students
+              <Recipients
                 showStudents={showStudents}
                 toggleStudents={() => setShowStudents(!showStudents)}
               />
@@ -58,4 +53,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default TeacherDashboard;

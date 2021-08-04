@@ -29,6 +29,10 @@
   height: 50%;
 }
 
+.reminders button {
+  margin-top: 5px;
+}
+
 .reminders,
 .classes-and-kids {
   display: inline-block;
@@ -55,11 +59,6 @@
   cursor: pointer;
 }
 
-.item {
-  margin-top: 10px;
-  background-color: inherit;
-}
-
 .divider {
   border-top: 3px solid white;
   border-radius: 5px;
@@ -79,14 +78,50 @@
   background-color: white;
   border: none;
   color: black;
+  font-weight: bold;
 }
 
 .input-line {
   display: block;
   background-color: inherit;
-  margin-top: 10px;
+  margin-bottom: 15px;
 }
 
 .textarea {
   vertical-align: top;
+}
+
+.item {
+  margin: 10px;
+  background-color: inherit;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.item-text {
+  background-color: inherit;
+  cursor: pointer;
+}
+
+.trash {
+  background-color: rgb(20, 26, 34);
+}
+
+.trash:hover {
+  cursor: pointer;
+  color: red;
+  background-color: rgb(20, 26, 34);
+}
+
+.checkboxes {
+  background-color: transparent;
+  text-align: right;
+}
+
+.checkbox-value {
+  background-color: transparent;
+  display: inline-block;
+  margin-left: 5px;
 }

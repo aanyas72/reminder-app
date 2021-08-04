@@ -1,18 +1,27 @@
 import { useState } from "react";
 
-const AddNew = ({ handleSubmit }) => {
-  const [addNew, setAddNew] = useState("");
+const AddNewTeacher = () => {
+  const [addNew, setAddNew] = useState("reminder");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
 
   return (
     <form className="new" onSubmit={handleSubmit}>
       <div className="input-line">
         <label className="label-name">
           Create a new:
-          <select className="add-new-input" onChange={(e) => setAddNew(e.target.value)}>
-            <option className="add-new-input">Choose One</option>
+          <select
+            className="add-new-input"
+            onChange={(e) => setAddNew(e.target.value)}
+          >
+            <option className="add-new-input">Choose</option>
+
             <option value="class" className="add-new-input">
               Class
             </option>
+
             <option value="reminder" className="add-new-input">
               Reminder
             </option>
@@ -62,4 +71,4 @@ const AddNew = ({ handleSubmit }) => {
   );
 };
 
-export default AddNew;
+export default AddNewTeacher;

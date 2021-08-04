@@ -29,6 +29,27 @@
   padding: 5px 0px 5px 5px;
 }
 
+.radio-input {
+  flex-grow: 1;
+}
+
+.middle {
+  flex-grow: 10;
+}
+
+.radio {
+  display: flex;
+  color: white;
+  background-color: transparent;
+  align-items: center;
+  margin: 10px 0px 10px 0px;
+}
+
+.radio-label {
+  color: white;
+  background-color: transparent;
+}
+
 .btn {
   display: block;
   width: 100%;
@@ -74,16 +95,20 @@
 
 .error {
   color: #ff7b72;
-  text-align: center;
   border: 1px red solid;
   background-color: #25171c;
-  margin-bottom: 10px;
 }
 
 .success {
   color: #72ff85;
-  text-align: center;
   border: 1px green solid;
   background-color: #172519;
+}
+
+.error,
+.success {
+  text-align: center;
   margin-bottom: 10px;
+  margin-top: 10px;
+  cursor: pointer;
 }

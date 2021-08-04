@@ -38,19 +38,10 @@ public class SecurityConfigBasicAuth extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/users/add").permitAll()
+                .antMatchers("/users").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
-
-//        .httpBasic()
-//                .and()
-//                .logout()
-//                .invalidateHttpSession(true)
-//                .clearAuthentication(true)
-//                .permitAll();
-
-        //.exceptionHandling().accessDeniedPage("/403");
     }
 
     @Bean

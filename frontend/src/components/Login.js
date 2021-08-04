@@ -12,44 +12,56 @@ const Login = () => {
 
   const history = useHistory();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    AuthenticationService.executeBasicAuthenticationService(username, password)
-      .then(() => {
-        setShowSuccessMessage(true);
-        AuthenticationService.registerSuccessfulLogin(username, password);
-        history.push(`/`);
-      })
-      .catch(() => setLoginFailed(true));
+    try {
+      await AuthenticationService.executeBasicAuthenticationService(
+        username,
+        password
+      );
+      setShowSuccessMessage(true);
+      AuthenticationService.registerSuccessfulLogin(username, password);
+      AuthenticationService.registerUserDetails(
+        await AuthenticationService.getUserDetails(username)
+      );
+      history.push(`/`);
+    } catch {
+      setLoginFailed(true);
+      setUsername("");
+      setPassword("");
+    }
   };
 
   return (
     <>
       <div className="sign-in">Sign in</div>
       {loginFailed && (
-        <div className="error box">
+        <div className="error box" onClick={() => setLoginFailed(false)}>
           Incorrect username or password. Try again.
         </div>
       )}
       {showSuccessMessage && (
-        <div className="success box">Success! Logging in.</div>
+        <div
+          className="success box"
+          onClick={() => setShowSuccessMessage(false)}
+        >
+          Success! Logging in.
+        </div>
       )}
 
       <form className="login box" onSubmit={handleSubmit}>
-        <div className="label">Email address</div>
+        <div className="label">Username</div>
         <input
           className="input"
-          name="username"
           value={username}
           onChange={(event) => setUsername(event.target.value)}
-          autoComplete="email"
+          autoComplete="username"
         ></input>
         <div className="label">Password</div>
         <input
           type="password"
           className="input"
-          name="password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
           autoComplete="current-password"

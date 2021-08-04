@@ -3,6 +3,8 @@ import axios from "axios";
 const API_URL = "http://localhost:8080";
 
 export const USER_NAME_SESSION_ATTRIBUTE_NAME = "authenticatedUser";
+const ID = "loggedInUserId";
+const ACCOUNT_TYPE = "loggedInUserAccountType";
 
 class AuthenticationService {
   executeBasicAuthenticationService(username, password) {
@@ -20,6 +22,19 @@ class AuthenticationService {
     this.setupAxiosInterceptors(this.createBasicAuthToken(username, password));
   }
 
+  getUserDetails(username) {
+    return axios.get(`${API_URL}/users`, {
+      params: {
+        username: username,
+      },
+    });
+  }
+
+  registerUserDetails(res) {
+    sessionStorage.setItem(ID, res.data.id);
+    sessionStorage.setItem(ACCOUNT_TYPE, res.data.accountType);
+  }
+
   logout() {
     sessionStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
   }
@@ -34,6 +49,21 @@ class AuthenticationService {
     let user = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
     if (user === null) return "";
     return user;
+  }
+
+  getLoggedInUserId() {
+    let id = sessionStorage.getItem(ID);
+    if (id !== null) {
+      return id;
+    }
+  }
+
+  getLoggedInUserAccountType() {
+    let accountType = sessionStorage.getItem(ACCOUNT_TYPE);
+    if (accountType === null) {
+      return "";
+    }
+    return accountType;
   }
 
   setupAxiosInterceptors(token) {
