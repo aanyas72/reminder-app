@@ -1,11 +1,11 @@
 package com.aanya.reminderapp.controller;
 
+import com.aanya.reminderapp.controller.model.Classs;
 import com.aanya.reminderapp.controller.model.Recipient;
 import com.aanya.reminderapp.controller.model.Reminder;
 import com.aanya.reminderapp.controller.model.User;
 import com.aanya.reminderapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +18,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    //users
 
     @GetMapping(params = "username")
     public Map<Object, Object> getUserDetails(@RequestParam String username) {
@@ -34,10 +36,12 @@ public class UserController {
         userService.addUser(user);
     }
 
-    @RequestMapping(path = "/{id}",method = RequestMethod.DELETE)
+    @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
     public void deleteUser(@PathVariable Integer id) {
         userService.deleteUser(id);
     }
+
+    //recipients
 
     @GetMapping(path = "/recipients", params = "alexaId")
     public List<String> getUsersByAlexaId(@RequestParam String alexaId) {
@@ -45,19 +49,16 @@ public class UserController {
     }
 
     @GetMapping(path = "/recipients", params = "id")
-    public String getAlexaIdById(@RequestParam Integer id) {
+    public String getAlexaIdByUserId(@RequestParam Integer id) {
         return userService.getRecipientAlexaIdById(id);
-    }
-
-    @PostMapping(path = "/{id}/recipients")
-    public void createRecipient(@PathVariable Integer id, @RequestBody Recipient recipient) {
-        userService.addRecipient(id, recipient);
     }
 
     @GetMapping(path = "/{userId}/recipients")
     public Map<Integer, String> getRecipientsByUserId(@PathVariable Integer userId) {
         return userService.getRecipientsByUserId(userId);
     }
+
+    //reminders
 
     @GetMapping(path = "/recipients/reminders", params = "alexaId")
     public Map<Integer, String> getRemindersByAlexaId(@RequestParam String alexaId) {
@@ -69,13 +70,63 @@ public class UserController {
         return userService.getRemindersByAlexaIdAndUserId(alexaId, id);
     }
 
-    @PostMapping(path = "/{id}/reminders")
-    public void createReminder(@PathVariable Integer id, @RequestBody Reminder reminder) {
-        userService.addReminder(id, reminder);
+    @GetMapping(path = "/classes/reminders", params = {"alexaId", "classId"})
+    public Map<Integer, String> getRemindersByAlexaIdAndClassId(@RequestParam String alexaId, @RequestParam Integer classId) {
+        return userService.getRemindersByAlexaIdAndClassId(alexaId, classId);
+    }
+
+    @GetMapping(path = "/recipients/classes", params = "alexaId")
+    public List<String> getClassesByAlexaId(@RequestParam String alexaId) {
+        return userService.getClassesByAlexaId(alexaId);
     }
 
     @RequestMapping(path = "/reminders", params = "reminderId", method = RequestMethod.DELETE)
     public void deleteReminder(@RequestParam Integer reminderId) {
         userService.deleteReminder(reminderId);
     }
+
+    //parent
+
+    @PostMapping(path = "/{id}/reminders")
+    public void createParentReminder(@PathVariable Integer id, @RequestBody Reminder reminder) {
+        userService.addParentReminder(id, reminder);
+    }
+
+    @PostMapping(path = "/{id}/recipients")
+    public void createParentRecipient(@PathVariable Integer id, @RequestBody Recipient recipient) {
+        userService.addParentRecipient(id, recipient);
+    }
+
+    //classes
+
+    @PostMapping(path = "/classes")
+    public void createClass(@RequestBody Classs classs) {
+        userService.createClass(classs);
+    }
+
+    @GetMapping(path = "/classes", params = "id")
+    public Map<Integer, String> getClassesByUser(@RequestParam Integer id) {
+        return userService.getClassesByUser(id);
+    }
+
+    @RequestMapping(path = "/classes", params = "classId", method = RequestMethod.DELETE)
+    public void deleteClass(@RequestParam Integer id) {
+        userService.deleteClass(id);
+    }
+
+    @PostMapping(path = "/classes/recipients")
+    public void createClassRecipient(@RequestBody Recipient recipient) {
+        userService.createTeacherRecipient(recipient);
+    }
+
+    @GetMapping(path = "/classes/{classId}/recipients")
+    public Map<Integer, String> getRecipientsByClass(@PathVariable Integer classId) {
+        return userService.getRecipientsByClassId(classId);
+    }
+
+    @PostMapping(path = "/classes/reminders")
+    public void addTeacherReminder(@RequestBody Reminder reminder) {
+        userService.addTeacherReminder(reminder);
+    }
+
 }

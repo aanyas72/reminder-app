@@ -25,10 +25,8 @@ public class JpaRecipientEntity {
     @JsonIgnore
     private List<JpaReminderEntity> jpaReminderEntities;
 
-//    @ManyToMany
-//    @JsonIgnore
-//
-
+    @ManyToOne
+    private JpaClasssEntity jpaClasssEntity;
 
     public Integer getRecipientId() {
         return recipientId;
@@ -68,5 +66,13 @@ public class JpaRecipientEntity {
 
     public void setJpaReminderEntities(List<JpaReminderEntity> jpaReminderEntities) {
         this.jpaReminderEntities = jpaReminderEntities;
+    }
+
+    public JpaClasssEntity getJpaClasssEntity() {
+        return jpaClasssEntity;
+    }
+
+    public void setJpaClasssEntity(JpaClasssEntity jpaClasssEntity) {
+        this.jpaClasssEntity = jpaClasssEntity;
     }
 }

@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface RecipientRepository extends JpaRepository<JpaRecipientEntity, Integer> {
     List<JpaRecipientEntity> getJpaRecipientEntitiesByJpaUserEntity_Id(Integer id);
+    List<JpaRecipientEntity> getJpaRecipientEntitiesByJpaClasssEntity_ClasssId(Integer classsId);
 }

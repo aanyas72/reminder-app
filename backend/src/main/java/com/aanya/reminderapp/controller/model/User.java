@@ -16,7 +16,7 @@ public class User {
 
     private List<Reminder> reminders;
 
-//    private List<Classs> classses;
+    private List<Classs> classses;
 
     public Integer getId() {
         return id;
@@ -66,5 +66,12 @@ public class User {
         this.reminders = reminders;
     }
 
+    public List<Classs> getClassses() {
+        return classses;
+    }
+
+    public void setClassses(List<Classs> classses) {
+        this.classses = classses;
+    }
 }
 

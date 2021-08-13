@@ -10,7 +10,7 @@ public class Reminder {
 
     private Recipient recipient;
 
-//    private Classs classs;
+    private Classs classs;
 
     public Integer getReminderId() {
         return reminderId;
@@ -42,5 +42,13 @@ public class Reminder {
 
     public void setRecipient(Recipient recipient) {
         this.recipient = recipient;
+    }
+
+    public Classs getClasss() {
+        return classs;
+    }
+
+    public void setClasss(Classs classs) {
+        this.classs = classs;
     }
 }

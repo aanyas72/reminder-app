@@ -19,8 +19,8 @@ public class JpaReminderEntity {
     @ManyToOne
     private JpaRecipientEntity jpaRecipientEntity;
 
-//    @ManyToOne
-//    private Classs classs;
+    @ManyToOne
+    private JpaClasssEntity jpaClasssEntity;
 
     public Integer getReminderId() {
         return reminderId;
@@ -52,5 +52,13 @@ public class JpaReminderEntity {
 
     public void setJpaRecipientEntity(JpaRecipientEntity jpaRecipientEntity) {
         this.jpaRecipientEntity = jpaRecipientEntity;
+    }
+
+    public JpaClasssEntity getJpaClasssEntity() {
+        return jpaClasssEntity;
+    }
+
+    public void setJpaClasssEntity(JpaClasssEntity jpaClasssEntity) {
+        this.jpaClasssEntity = jpaClasssEntity;
     }
 }

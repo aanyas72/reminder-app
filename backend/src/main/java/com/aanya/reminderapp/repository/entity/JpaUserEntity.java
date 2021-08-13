@@ -27,10 +27,9 @@ public class JpaUserEntity {
     @JsonIgnore
     private List<JpaReminderEntity> jpaReminderEntities;
 
-//    @OneToMany(mappedBy = "user", orphanRemoval = true)
-//    @JsonIgnore
-//    private List<Classs> classses;
-
+    @OneToMany(mappedBy = "jpaUserEntity", orphanRemoval = true)
+    @JsonIgnore
+    private List<JpaClasssEntity> jpaClasssEntities;
 
     public Integer getId() {
         return id;
@@ -78,6 +77,14 @@ public class JpaUserEntity {
 
     public void setJpaReminderEntities(List<JpaReminderEntity> jpaReminderEntities) {
         this.jpaReminderEntities = jpaReminderEntities;
+    }
+
+    public List<JpaClasssEntity> getJpaClasssEntities() {
+        return jpaClasssEntities;
+    }
+
+    public void setJpaClasssEntities(List<JpaClasssEntity> jpaClasssEntities) {
+        this.jpaClasssEntities = jpaClasssEntities;
     }
 }
 

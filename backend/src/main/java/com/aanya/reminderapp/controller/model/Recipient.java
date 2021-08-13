@@ -14,8 +14,7 @@ public class Recipient {
 
     private List<Reminder> reminders;
 
-//    private List<Classs> userClasses;
-
+    private Classs classs;
 
     public Integer getRecipientId() {
         return recipientId;
@@ -57,4 +56,11 @@ public class Recipient {
         this.reminders = reminders;
     }
 
+    public Classs getClasss() {
+        return classs;
+    }
+
+    public void setClasss(Classs classs) {
+        this.classs = classs;
+    }
 }

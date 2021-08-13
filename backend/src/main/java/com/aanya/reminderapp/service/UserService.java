@@ -1,16 +1,18 @@
 package com.aanya.reminderapp.service;
 
+import com.aanya.reminderapp.controller.model.Classs;
 import com.aanya.reminderapp.controller.model.Recipient;
 import com.aanya.reminderapp.controller.model.Reminder;
 import com.aanya.reminderapp.controller.model.User;
+import com.aanya.reminderapp.repository.ClasssRepository;
 import com.aanya.reminderapp.repository.RecipientRepository;
 import com.aanya.reminderapp.repository.ReminderRepository;
 import com.aanya.reminderapp.repository.UserRepository;
+import com.aanya.reminderapp.repository.entity.JpaClasssEntity;
 import com.aanya.reminderapp.repository.entity.JpaRecipientEntity;
 import com.aanya.reminderapp.repository.entity.JpaReminderEntity;
 import com.aanya.reminderapp.repository.entity.JpaUserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +34,11 @@ public class UserService {
     @Autowired
     private ReminderRepository reminderRepository;
 
+    @Autowired
+    private ClasssRepository classsRepository;
+
     public Map<Object, Object> getUserDetails(String username) {
+
         Map<Object, Object> userDetails = new HashMap<>();
         userDetails.put("id", userRepository.findJpaUserEntityByUsername(username).getId());
         userDetails.put("accountType", userRepository.findJpaUserEntityByUsername(username).getAccountType());
@@ -55,7 +61,8 @@ public class UserService {
         userRepository.saveAndFlush(jpaUserEntity);
     }
 
-    public void addRecipient(Integer id, Recipient recipient) {
+    public void addParentRecipient(Integer id, Recipient recipient) {
+
         JpaRecipientEntity jpaRecipientEntity = new JpaRecipientEntity();
         jpaRecipientEntity.setRecipientId(recipient.getRecipientId());
         jpaRecipientEntity.setAlexaId(recipient.getAlexaId());
@@ -83,6 +90,20 @@ public class UserService {
                 .collect(Collectors.toMap(JpaReminderEntity::getReminderId, JpaReminderEntity::getReminderText));
     }
 
+    public Map<Integer, String> getRemindersByAlexaIdAndClassId(String alexaId, Integer classId) {
+        //get reminders specific to class
+        return reminderRepository.getJpaReminderEntitiesByJpaRecipientEntity_AlexaIdAndJpaClasssEntity_ClasssId(alexaId, classId)
+                .stream()
+                .collect(Collectors.toMap(JpaReminderEntity::getReminderId, JpaReminderEntity::getReminderText));
+    }
+
+    public List<String> getClassesByAlexaId(String alexaId) {
+        return classsRepository.getJpaClasssEntities_ClassIdByJpaRecipientEntity_AlexaId(alexaId)
+                .stream()
+                .map(num -> classsRepository.getById(num).getClasssName())
+                .collect(Collectors.toList());
+    }
+
     public List<String> getUsersByAlexaId(String alexaId) {
         return userRepository.getJpaUserEntitiesByJpaRecipientEntities_AlexaId(alexaId)
                 .stream()
@@ -100,12 +121,24 @@ public class UserService {
                 .collect(Collectors.toMap(JpaRecipientEntity::getRecipientId, JpaRecipientEntity::getRecipientAlexaName));
     }
 
-    public void addReminder(Integer id, Reminder reminders) {
+    public void addParentReminder(Integer id, Reminder reminder) {
+
         JpaReminderEntity jpaReminderEntity = new JpaReminderEntity();
-        jpaReminderEntity.setReminderId(reminders.getReminderId());
-        jpaReminderEntity.setReminderText(reminders.getReminderText());
+        jpaReminderEntity.setReminderId(reminder.getReminderId());
+        jpaReminderEntity.setReminderText(reminder.getReminderText());
         jpaReminderEntity.setJpaUserEntity(userRepository.getById(id));
-        jpaReminderEntity.setJpaRecipientEntity(recipientRepository.getById(reminders.getRecipient().getRecipientId()));
+        jpaReminderEntity.setJpaRecipientEntity(recipientRepository.getById(reminder.getRecipient().getRecipientId()));
+
+        reminderRepository.saveAndFlush(jpaReminderEntity);
+    }
+
+    public void addTeacherReminder(Reminder reminder) {
+
+        JpaReminderEntity jpaReminderEntity = new JpaReminderEntity();
+        jpaReminderEntity.setReminderId(reminder.getReminderId());
+        jpaReminderEntity.setReminderText(reminder.getReminderText());
+        jpaReminderEntity.setJpaRecipientEntity(recipientRepository.getById(reminder.getRecipient().getRecipientId()));
+        jpaReminderEntity.setJpaClasssEntity(classsRepository.getById(reminder.getClasss().getClasssId()));
 
         reminderRepository.saveAndFlush(jpaReminderEntity);
     }
@@ -117,6 +150,43 @@ public class UserService {
     @Transactional
     public void deleteUser(Integer id) {
         userRepository.deleteById(id);
+    }
+
+    public void createClass(Classs classs) {
+
+        JpaClasssEntity jpaClasssEntity = new JpaClasssEntity();
+        jpaClasssEntity.setClasssId(classs.getClasssId());
+        jpaClasssEntity.setClasssName(classs.getClasssName());
+        jpaClasssEntity.setJpaUserEntity(userRepository.getById(classs.getUser().getId()));
+
+        classsRepository.saveAndFlush(jpaClasssEntity);
+    }
+
+    public Map<Integer, String> getClassesByUser(Integer id) {
+        return classsRepository.getJpaClasssEntitiesByJpaUserEntity_Id(id)
+                .stream()
+                .collect(Collectors.toMap(JpaClasssEntity::getClasssId, JpaClasssEntity::getClasssName));
+
+    }
+
+    public void deleteClass(Integer id) {
+        classsRepository.deleteById(id);
+    }
+
+    public void createTeacherRecipient(Recipient recipient) {
+        JpaRecipientEntity jpaRecipientEntity = new JpaRecipientEntity();
+        jpaRecipientEntity.setRecipientId(recipient.getRecipientId());
+        jpaRecipientEntity.setAlexaId(recipientRepository.getById(recipient.getRecipientId()).getAlexaId());
+        jpaRecipientEntity.setRecipientAlexaName(recipient.getRecipientAlexaName());
+        jpaRecipientEntity.setJpaClasssEntity(classsRepository.getById(recipient.getClasss().getClasssId()));
+
+        recipientRepository.saveAndFlush(jpaRecipientEntity);
+    }
+
+    public Map<Integer, String> getRecipientsByClassId(Integer classId) {
+        return recipientRepository.getJpaRecipientEntitiesByJpaClasssEntity_ClasssId(classId)
+                .stream()
+                .collect(Collectors.toMap(JpaRecipientEntity::getRecipientId, JpaRecipientEntity::getRecipientAlexaName));
     }
 
 }
