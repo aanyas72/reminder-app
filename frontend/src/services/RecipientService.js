@@ -7,8 +7,7 @@ class RecipientService {
   getRecipientsByUser() {
     const id = AuthenticationService.getLoggedInUserId();
     if (id) {
-      return axios.get(`${REMINDER_API_URL}/${id}/recipients`, {
-      });
+      return axios.get(`${REMINDER_API_URL}/${id}/recipients`, {});
     }
   }
 
@@ -16,6 +15,13 @@ class RecipientService {
     return axios.get(`${REMINDER_API_URL}/recipients`, {
       params: { id: id },
     });
+  }
+
+  getRecipientsByClass(classId) {
+    const GET_RECIPIENTS_URL = `${REMINDER_API_URL}/classes/${classId}/recipients`;
+    if (classId) {
+      return axios.get(GET_RECIPIENTS_URL, {});
+    }
   }
 }
 

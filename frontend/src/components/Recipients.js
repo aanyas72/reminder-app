@@ -1,17 +1,17 @@
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+
 import Item from "./Item";
 
 const Recipients = ({
   showRecipients,
   toggleRecipients,
-  accType,
   recipients,
   changeActiveRecipient,
 }) => {
   return (
     <>
       <div className="label-name">
-        {accType === "teacher" ? "Students" : "Recipients"}
+        Recipients
       </div>
       {showRecipients ? (
         <FaAngleDown className="expand-btn" onClick={toggleRecipients} />

@@ -43,6 +43,30 @@ class ReminderDataService {
 
     return axios.all(dataToSend);
   }
+
+  getRemindersByClass(classId) {
+    const REMINDER_URL = `${REMINDER_API_URL}/classes/${classId}reminders`;
+    return axios.get(REMINDER_URL, {});
+  }
+
+  addNewClassReminders(sendTo, reminderText) {
+    const ADD_REMINDER_API_URL = REMINDER_API_URL + "/classes/reminders";
+    let dataToSend = [];
+
+    for (let [key, value] of sendTo) {
+      if (value === true) {
+        dataToSend.push(
+          axios.post(ADD_REMINDER_API_URL, {
+            reminderText: reminderText,
+            classs: {
+              classsId: key,
+            },
+          })
+        );
+      }
+    }
+    return axios.all(dataToSend);
+  }
 }
 
 export default new ReminderDataService();

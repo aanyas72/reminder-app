@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 
 import ReminderDataService from "../services/ReminderDataService";
 import Checkboxes from "./Checkboxes";
+import { handleCheckboxChange, createFalseMap } from "./AddNew";
 
 const AddNewParent = ({ closeAddNew, recipientsArr, submitted }) => {
   const [recipients, setRecipients] = useState();
   const [reminderText, setReminderText] = useState("");
   const [sendTo, setSendTo] = useState();
   const [addFailed, setAddFailed] = useState(false);
-  const [addSuccess, setAddSuccess] = useState(false);
 
   useEffect(() => {
     const arrToMap = () => {
@@ -20,39 +20,22 @@ const AddNewParent = ({ closeAddNew, recipientsArr, submitted }) => {
     arrToMap();
   }, [recipientsArr]);
 
-  const handleCheckboxChange = (key) =>
-    setSendTo(new Map(sendTo.set(key, !sendTo.get(key))));
-
-  const createFalseMap = (recipients, keys) => {
-    const map1 = new Map();
-    for (let i = 0; i < recipients.size; i++) {
-      map1.set(keys[i], false);
-    }
-    return map1;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       await ReminderDataService.addNewReminders(sendTo, reminderText);
-      setAddSuccess(true);
       submitted();
       closeAddNew();
-    } catch {
-      setAddFailed(true);
-    }
+    } catch {}
   };
 
   return (
     <>
-      {addSuccess && (
-        <div className="success box" onClick={() => setAddSuccess(false)}>
-          Reminder successfully sent!
-        </div>
-      )}
       {addFailed && (
-        <div className="error box">Failed to send reminder. Try again.</div>
+        <div className="error box" onClick={() => setAddFailed(false)}>
+          Failed to send reminder. Try again.
+        </div>
       )}
       <form className="new" onSubmit={handleSubmit}>
         <div className="input-line">
@@ -84,7 +67,9 @@ const AddNewParent = ({ closeAddNew, recipientsArr, submitted }) => {
                   key={key}
                   value={value}
                   checked={sendTo.get(key)}
-                  handleChange={() => handleCheckboxChange(key)}
+                  handleChange={() =>
+                    handleCheckboxChange(key, sendTo, setSendTo)
+                  }
                 />
               ))}
           </label>

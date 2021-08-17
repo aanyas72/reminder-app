@@ -34,7 +34,7 @@ const ParentDashboard = () => {
           <Header />
           <div className="dashboard">
             <div className="dashboard-header">
-              <div className="dashboard-name">Dashboard</div>
+              <div className="dashboard-name">Parent Dashboard</div>
               <button className="add-new" onClick={() => setShowAdd(!showAdd)}>
                 {showAdd ? "-" : "+"}
               </button>
@@ -54,7 +54,6 @@ const ParentDashboard = () => {
               <Recipients
                 showRecipients={showRecipients}
                 toggleRecipients={() => setShowRecipients(!showRecipients)}
-                accType="parent"
                 changeActiveRecipient={(newRec) => setActiveRecipient(newRec)}
                 recipients={recipients}
               />

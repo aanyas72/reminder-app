@@ -2,9 +2,9 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8080";
 
-export const USER_NAME_SESSION_ATTRIBUTE_NAME = "authenticatedUser";
+const USER_NAME_SESSION_ATTRIBUTE_NAME = "authenticatedUser";
 const ID = "loggedInUserId";
-const ACCOUNT_TYPE = "loggedInUserAccountType";
+export const ACCOUNT_TYPE = "accountType";
 
 class AuthenticationService {
   executeBasicAuthenticationService(username, password) {
@@ -18,8 +18,8 @@ class AuthenticationService {
   }
 
   registerSuccessfulLogin(username, password) {
-    sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_NAME, username);
-    this.setupAxiosInterceptors(this.createBasicAuthToken(username, password));
+    localStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_NAME, username);
+    localStorage.setItem("user", this.createBasicAuthToken(username, password));
   }
 
   getUserDetails(username) {
@@ -31,39 +31,32 @@ class AuthenticationService {
   }
 
   registerUserDetails(res) {
-    sessionStorage.setItem(ID, res.data.id);
-    sessionStorage.setItem(ACCOUNT_TYPE, res.data.accountType);
+    localStorage.setItem(ID, res.data.id);
+    localStorage.setItem(ACCOUNT_TYPE, res.data.accountType);
   }
 
   logout() {
-    sessionStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
+    localStorage.clear();
   }
 
   isUserLoggedIn() {
-    let user = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
-    if (user === null) return false;
-    return true;
+    const user = localStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
+    if (user) {
+      this.setupAxiosInterceptors(localStorage.getItem("user"));
+      return true;
+    }
   }
 
   getLoggedInUserName() {
-    let user = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
-    if (user === null) return "";
-    return user;
+    return localStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
   }
 
   getLoggedInUserId() {
-    let id = sessionStorage.getItem(ID);
-    if (id !== null) {
-      return id;
-    }
+    return localStorage.getItem(ID);
   }
 
   getLoggedInUserAccountType() {
-    let accountType = sessionStorage.getItem(ACCOUNT_TYPE);
-    if (accountType === null) {
-      return "";
-    }
-    return accountType;
+    return localStorage.getItem(ACCOUNT_TYPE);
   }
 
   setupAxiosInterceptors(token) {

@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 
 import "../styles/LoginAndSignUp.css";
-import AuthenticationService from "../services/AuthenticationService";
+import AuthenticationService, {
+  ACCOUNT_TYPE,
+} from "../services/AuthenticationService";
 
-const Login = () => {
+const Login = ({ setAccType }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginFailed, setLoginFailed] = useState(false);
@@ -20,11 +22,12 @@ const Login = () => {
         username,
         password
       );
-      setShowSuccessMessage(true);
       AuthenticationService.registerSuccessfulLogin(username, password);
       AuthenticationService.registerUserDetails(
         await AuthenticationService.getUserDetails(username)
       );
+      setAccType(localStorage.getItem(ACCOUNT_TYPE));
+      setShowSuccessMessage(true);
       history.push(`/`);
     } catch {
       setLoginFailed(true);

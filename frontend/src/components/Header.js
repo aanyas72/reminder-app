@@ -18,6 +18,14 @@ const Header = () => {
             <div>
               Signed in as <b>{AuthenticationService.getLoggedInUserName()}</b>
             </div>
+            <div style={{ marginTop: "10px" }}>
+              Account Type
+              <b>{AuthenticationService.getLoggedInUserAccountType()}</b>
+            </div>
+            <div style={{ marginTop: "10px" }}>
+              User code:
+              <b>{AuthenticationService.getLoggedInUserId()}</b>
+            </div>
             <div className="divider"></div>
             <Link
               to="/logout"

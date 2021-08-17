@@ -1,10 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const AddNewTeacher = () => {
-  const [addNew, setAddNew] = useState("reminder");
+import ClassService from "../services/ClassService";
+import Checkboxes from "./Checkboxes";
+import { createFalseMap, handleCheckboxChange } from "./AddNew";
+import ReminderDataService from "../services/ReminderDataService";
 
-  const handleSubmit = (e) => {
+const AddNewTeacher = ({ classesArr, closeAddNew, submittedReminder }) => {
+  const [addNew, setAddNew] = useState();
+  const [sendTo, setSendTo] = useState();
+  const [text, setText] = useState();
+  const [classes, setClasses] = useState();
+
+  useEffect(() => {
+    const arrToMap = () => {
+      const map = new Map(classesArr);
+      const keys = Array.from(map.keys());
+      setClasses(map);
+      setSendTo(createFalseMap(map, keys));
+    };
+    arrToMap();
+  }, [classesArr]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    try {
+      if (addNew === "class") {
+        await ClassService.createNewClass(text)
+        window.location.reload();
+      }
+      else if (addNew === "reminder") {
+        await ReminderDataService.addNewClassReminders(sendTo, text);
+        submittedReminder();
+      }
+      closeAddNew();
+    } catch {}
   };
 
   return (
@@ -17,11 +47,9 @@ const AddNewTeacher = () => {
             onChange={(e) => setAddNew(e.target.value)}
           >
             <option className="add-new-input">Choose</option>
-
             <option value="class" className="add-new-input">
               Class
             </option>
-
             <option value="reminder" className="add-new-input">
               Reminder
             </option>
@@ -33,7 +61,11 @@ const AddNewTeacher = () => {
         <div className="input-line">
           <label className="item">
             Class name:
-            <input type="text" className="add-new-input"></input>
+            <input
+              type="text"
+              className="add-new-input"
+              onChange={(e) => setText(e.target.value)}
+            ></input>
           </label>
         </div>
       )}
@@ -43,22 +75,27 @@ const AddNewTeacher = () => {
           <div className="input-line">
             <label className="item">
               Reminder:
-              <textarea className="add-new-input textarea"></textarea>
+              <textarea
+                className="add-new-input textarea"
+                onChange={(e) => setText(e.target.value)}
+              ></textarea>
             </label>
           </div>
 
           <div className="input-line">
             <label className="item">
               Send to:
-              <select className="add-new-input">
-                <option className="add-new-input">Choose</option>
-                <option value="1stPd" className="add-new-input">
-                  1st pd
-                </option>
-                <option value="2ndPd" className="add-new-input">
-                  2nd pd
-                </option>
-              </select>
+              {classes &&
+                Array.from(classes, ([key, value]) => (
+                  <Checkboxes
+                    key={key}
+                    value={value}
+                    checked={sendTo.get(key)}
+                    handleChange={() =>
+                      handleCheckboxChange(key, sendTo, setSendTo)
+                    }
+                  />
+                ))}
             </label>
           </div>
         </>

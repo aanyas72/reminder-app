@@ -1,11 +1,24 @@
 import { FaRegTrashAlt } from "react-icons/fa";
 
-const Item = ({ text, deleteItem, type, changeActiveRecipient, id }) => {
+const Item = ({
+  text,
+  deleteItem,
+  type,
+  changeActiveRecipient,
+  id,
+  changeActiveClass,
+}) => {
   return (
     <div className="item">
       <div
         className="item-text"
-        onClick={type === "recipient" ? changeActiveRecipient : undefined}
+        onClick={
+          type === "recipient"
+            ? changeActiveRecipient
+            : type === "class"
+            ? changeActiveClass
+            : undefined
+        }
       >
         {text}
       </div>

@@ -3,13 +3,17 @@ import { useState, useEffect } from "react";
 import Item from "./Item";
 import RecipientService from "../services/RecipientService";
 import ReminderDataService from "../services/ReminderDataService";
+import AuthenticationService from "../services/AuthenticationService";
 
-const Reminders = ({ isRec, activeRecipient }) => {
+const Reminders = ({ isRec, activeRecipient, remType }) => {
   const [reminders, setReminders] = useState();
 
   useEffect(() => {
     const getReminders = async () => {
-      if (activeRecipient) {
+      if (
+        AuthenticationService.getLoggedInUserAccountType() === "parent" &&
+        activeRecipient
+      ) {
         try {
           const alexaId = await RecipientService.getAlexaIdById(
             activeRecipient
@@ -19,10 +23,20 @@ const Reminders = ({ isRec, activeRecipient }) => {
           );
           setReminders(Array.from(Object.entries(resp.data)));
         } catch {}
+      } else if (
+        AuthenticationService.getLoggedInUserAccountType() === "teacher" &&
+        activeRecipient
+      ) {
+        try {
+          const resp = await ReminderDataService.getRemindersByClass(
+            activeRecipient
+          );
+          setReminders(Array.from(Object.entries(resp.data)));
+        } catch {}
       }
     };
     getReminders();
-  }, [activeRecipient]);
+  }, [activeRecipient, remType]);
 
   const deleteItem = async (reminderIdToDelete) => {
     try {
@@ -38,7 +52,10 @@ const Reminders = ({ isRec, activeRecipient }) => {
       <div className="label-name">Active Reminders</div>
       {isRec && !activeRecipient ? (
         <div style={{ backgroundColor: "transparent", marginTop: "10px" }}>
-          Click on a recipient to see their reminders.
+          Click on a
+          {AuthenticationService.getLoggedInUserAccountType() === "parent"
+            ? " recipient to see their reminders."
+            : " class to see its reminders."}
         </div>
       ) : (
         reminders &&
