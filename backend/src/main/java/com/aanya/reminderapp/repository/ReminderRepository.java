@@ -9,4 +9,5 @@ public interface ReminderRepository extends JpaRepository<JpaReminderEntity, Int
     List<JpaReminderEntity> getJpaReminderEntitiesByJpaRecipientEntity_AlexaId(String alexaId);
     List<JpaReminderEntity> getJpaReminderEntitiesByJpaRecipientEntity_AlexaIdAndJpaUserEntity_Id(String jpaRecipientEntity_alexaId, Integer jpaUserEntity_id);
     List<JpaReminderEntity> getJpaReminderEntitiesByJpaRecipientEntity_AlexaIdAndJpaClasssEntity_ClasssId(String jpaRecipientEntity_alexaId, Integer jpaClasssEntity_classsId);
+    List<JpaReminderEntity> getJpaReminderEntitiesByJpaClasssEntity_ClasssId(Integer classsId);
 }

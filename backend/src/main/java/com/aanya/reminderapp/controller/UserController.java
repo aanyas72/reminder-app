@@ -61,7 +61,7 @@ public class UserController {
     //reminders
 
     @GetMapping(path = "/recipients/reminders", params = "alexaId")
-    public Map<Integer, String> getRemindersByAlexaId(@RequestParam String alexaId) {
+    public Object[] getRemindersByAlexaId(@RequestParam String alexaId) {
         return userService.getRemindersByAlexaId(alexaId);
     }
 
@@ -75,9 +75,9 @@ public class UserController {
         return userService.getRemindersByAlexaIdAndClassId(alexaId, classId);
     }
 
-    @GetMapping(path = "/recipients/classes", params = "alexaId")
-    public List<String> getClassesByAlexaId(@RequestParam String alexaId) {
-        return userService.getClassesByAlexaId(alexaId);
+    @GetMapping(path = "/classes/{classId}reminders")
+    public Map<Integer, String> getRemindersByClassId(@PathVariable Integer classId) {
+        return userService.getRemindersByClassId(classId);
     }
 
     @RequestMapping(path = "/reminders", params = "reminderId", method = RequestMethod.DELETE)
@@ -110,8 +110,8 @@ public class UserController {
     }
 
     @RequestMapping(path = "/classes", params = "classId", method = RequestMethod.DELETE)
-    public void deleteClass(@RequestParam Integer id) {
-        userService.deleteClass(id);
+    public void deleteClass(@RequestParam Integer classId) {
+        userService.deleteClass(classId);
     }
 
     @PostMapping(path = "/classes/recipients")
@@ -127,6 +127,11 @@ public class UserController {
     @PostMapping(path = "/classes/reminders")
     public void addTeacherReminder(@RequestBody Reminder reminder) {
         userService.addTeacherReminder(reminder);
+    }
+
+    @GetMapping(path = "/recipients/classes", params = "alexaId")
+    public List<String> getClassesByAlexaId(@RequestParam String alexaId) {
+        return userService.getClassesByAlexaId(alexaId);
     }
 
 }

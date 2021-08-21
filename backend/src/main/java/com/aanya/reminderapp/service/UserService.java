@@ -72,13 +72,34 @@ public class UserService {
         recipientRepository.saveAndFlush(jpaRecipientEntity);
     }
 
-    public Map<Integer, String> getRemindersByAlexaId(String alexaId) {
-        //get all reminders by alexa id, no matter the user
-        List<JpaReminderEntity> jpaReminderEntities = reminderRepository.getJpaReminderEntitiesByJpaRecipientEntity_AlexaId(alexaId);
+    public void createTeacherRecipient(Recipient recipient) {
 
-        return jpaReminderEntities
+        JpaRecipientEntity jpaRecipientEntity = new JpaRecipientEntity();
+        jpaRecipientEntity.setAlexaId(recipient.getAlexaId());
+        jpaRecipientEntity.setRecipientAlexaName(recipient.getRecipientAlexaName());
+        jpaRecipientEntity.setJpaClasssEntity(classsRepository.getById(recipient.getClasss().getClasssId()));
+
+        recipientRepository.saveAndFlush(jpaRecipientEntity);
+    }
+
+    public Object[] getRemindersByAlexaId(String alexaId) {
+
+        //get reminders by user, if there are any
+        List<String> reminders = reminderRepository.getJpaReminderEntitiesByJpaRecipientEntity_AlexaId(alexaId)
                 .stream()
-                .collect(Collectors.toMap(JpaReminderEntity::getReminderId, JpaReminderEntity::getReminderText));
+                .map(JpaReminderEntity::getReminderText)
+                .collect(Collectors.toList());
+
+        //get reminders by class
+        List<List<String>> remindersToAdd = classsRepository.getJpaClasssEntities_ClassIdByJpaRecipientEntity_AlexaId(alexaId)
+                .stream()
+                .map(classNum -> reminderRepository.getJpaReminderEntitiesByJpaClasssEntity_ClasssId(classNum)
+                        .stream()
+                        .map(JpaReminderEntity::getReminderText)
+                        .collect(Collectors.toList()))
+                .collect(Collectors.toList());
+
+        return new Object[]{reminders, remindersToAdd};
     }
 
     public Map<Integer, String> getRemindersByAlexaIdAndUserId(String alexaId, Integer id) {
@@ -93,6 +114,12 @@ public class UserService {
     public Map<Integer, String> getRemindersByAlexaIdAndClassId(String alexaId, Integer classId) {
         //get reminders specific to class
         return reminderRepository.getJpaReminderEntitiesByJpaRecipientEntity_AlexaIdAndJpaClasssEntity_ClasssId(alexaId, classId)
+                .stream()
+                .collect(Collectors.toMap(JpaReminderEntity::getReminderId, JpaReminderEntity::getReminderText));
+    }
+
+    public Map<Integer, String> getRemindersByClassId(Integer classId) {
+        return reminderRepository.getJpaReminderEntitiesByJpaClasssEntity_ClasssId(classId)
                 .stream()
                 .collect(Collectors.toMap(JpaReminderEntity::getReminderId, JpaReminderEntity::getReminderText));
     }
@@ -137,7 +164,6 @@ public class UserService {
         JpaReminderEntity jpaReminderEntity = new JpaReminderEntity();
         jpaReminderEntity.setReminderId(reminder.getReminderId());
         jpaReminderEntity.setReminderText(reminder.getReminderText());
-        jpaReminderEntity.setJpaRecipientEntity(recipientRepository.getById(reminder.getRecipient().getRecipientId()));
         jpaReminderEntity.setJpaClasssEntity(classsRepository.getById(reminder.getClasss().getClasssId()));
 
         reminderRepository.saveAndFlush(jpaReminderEntity);
@@ -171,16 +197,6 @@ public class UserService {
 
     public void deleteClass(Integer id) {
         classsRepository.deleteById(id);
-    }
-
-    public void createTeacherRecipient(Recipient recipient) {
-        JpaRecipientEntity jpaRecipientEntity = new JpaRecipientEntity();
-        jpaRecipientEntity.setRecipientId(recipient.getRecipientId());
-        jpaRecipientEntity.setAlexaId(recipientRepository.getById(recipient.getRecipientId()).getAlexaId());
-        jpaRecipientEntity.setRecipientAlexaName(recipient.getRecipientAlexaName());
-        jpaRecipientEntity.setJpaClasssEntity(classsRepository.getById(recipient.getClasss().getClasssId()));
-
-        recipientRepository.saveAndFlush(jpaRecipientEntity);
     }
 
     public Map<Integer, String> getRecipientsByClassId(Integer classId) {
